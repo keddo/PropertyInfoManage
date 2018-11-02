@@ -6,11 +6,12 @@
   <title> Adu PM | Registration</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="/css/app.css">
 </head>
 <body class="hold-transition register-page">
-<div class="register-box">
+<div class="register-box" id="app">
   <div class="register-logo">
     <img src="{{'img/logo.png'}}" alt="Adigrat Univeristy logo" class="img-circle elevation-2">
   </div>

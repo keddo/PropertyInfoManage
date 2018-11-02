@@ -9,6 +9,15 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import VueRouter from 'vue-router';
+import {Form, HasError, AlertError} from 'vform';
+import moment from 'moment';
+import VueProgressBar from 'vue-progressbar';
+import swal from 'sweetalert2';
+
+
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 Vue.use(VueRouter);
 
 let routes = [
@@ -23,6 +32,29 @@ const router = new VueRouter({
     mode: 'history',
     routes
 });
+
+Vue.filter('myDate', function(created){
+    return moment(created).format('MMMM Do YYYY');
+})
+
+
+Vue.use(VueProgressBar, {
+     color: 'rgb(244, 115, 17)',
+     failedColor: 'red',
+     height: '2px'
+ })
+
+window.Fire = new Vue();
+
+window.swal = swal;
+const toast = swal.mixin({
+     toast: true,
+     position: 'top-end',
+     showConfirmButton: false,
+     timer: 3000
+ })
+
+window.toast = toast;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
