@@ -26,14 +26,15 @@
        @csrf
         <div class="input-group mb-3">
           <input id="email" type="email" placeholder="Email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+          
+          <div class="input-group-append">
+              <span class="fa fa-envelope input-group-text"></span>
+          </div>
           @if ($errors->has('email'))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first('email') }}</strong>
             </span>
           @endif
-          <div class="input-group-append">
-              <span class="fa fa-envelope input-group-text"></span>
-          </div>
         </div>
         <div class="input-group mb-3">
           <input  placeholder="Password" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>

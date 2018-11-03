@@ -7,6 +7,16 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,6 +47,39 @@ class UserController extends Controller
     public function show($id)
     {
         
+    }
+    public function profile()
+    {
+        return auth('api')->user();
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+        $currentPhoto = $user->profile_pic;
+        
+         $this->validate($request, [
+            'name'  => 'required|string|max:30',
+            'email' => 'required|string|email|max:30|unique:users,email,'.$user->id,
+            'password' => 'sometimes|required|string|min:8'
+        ]);
+        if($request->profile_pic != $currentPhoto){
+            $name = time().'.'.explode('/', explode(':', substr($request->profile_pic, 0, strpos($request->profile_pic, ';')))[1])[1];
+            \Image::make($request->profile_pic)->save(public_path('img/profiles/').$name);
+
+            $request->merge(['profile_pic' => $name]);
+            $userPhoto = public_path('img/profiles/').$currentPhoto;
+           if(file_exists($userPhoto)){
+              @unlink($userPhoto);
+           }
+        }
+        if(!empty($request->password)){
+            $request->merge(['password' => \Hash::make($request['password'])]);
+        }
+
+        $user->update($request->all());
+
+        return ['message' => 'success'];
+
     }
 
     /**
