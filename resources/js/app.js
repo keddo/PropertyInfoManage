@@ -13,7 +13,7 @@ import {Form, HasError, AlertError} from 'vform';
 import moment from 'moment';
 import VueProgressBar from 'vue-progressbar';
 import swal from 'sweetalert2';
-
+import Gate from './Gate';
 
 window.Form = Form;
 Vue.component(HasError.name, HasError)
@@ -70,12 +70,19 @@ Vue.component(
     'passport-personal-access-tokens',
     require('./components/passport/PersonalAccessTokens.vue')
 );
+Vue.component(
+    'not-found',
+    require('./components/NotFound.vue')
+);
 
+Vue.component('pagination', require('laravel-vue-pagination'));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+//prototyping your javascript file.
+Vue.prototype.$gate = new Gate(window.user);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 

@@ -42,7 +42,7 @@
                                                 <th>ያንዱ ዋጋ</th>
                                                 <th>ጠቅላላ ዋጋ</th>
                                                 <th>ስቶር የገባበት ቀን</th>
-                                                <th>ያስተካክሉ</th>
+                                                <th v-if="$gate.isSuperAdminOrPropertyAdmin()">ያስተካክሉ</th>
                                              </tr>
 
                                              <tr v-for="material in materials.data" :key="material.id">
@@ -55,13 +55,13 @@
                                                 <td>{{material.total_value}}</td>
                                                 <td>{{material.created_at | myDate}}</td>
                                                 <td>
-                                                    <a href="#" >
-                                                        <i class="fas fa-edit text-orang" @click="editItem(material)"></i>
+                                                    <a href="#" @click="editItem(material)" v-if="$gate.isSuperAdminOrPropertyAdmin()">
+                                                        <i class="fas fa-edit text-orang" ></i>
                                                     </a>
-                                                    <a href="#">
+                                                    <a href="#" v-if="$gate.isSuperAdminOrPropertyAdmin()">
                                                         <i class="fas fa-eye green"></i>
                                                     </a>
-                                                    <a href="#" >
+                                                    <a href="#" @click="deleteItem(material.id)" v-if="$gate.isSuperAdmin()">
                                                         <i class="fas fa-trash-alt red"></i>
                                                     </a>
                                                 </td>
@@ -69,6 +69,9 @@
                                           </tbody>
 
                                      </table>
+                                 </div>
+                                 <div class="card-footer">
+                                     <pagination :data="materials" @pagination-change-page="getResults"></pagination>
                                  </div>
                              </div>
 
@@ -207,6 +210,37 @@
                  this.materials = data;
              })
           },
+          deleteItem(id){
+             swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                ConfirmButtonText: 'Yes, Delete it!'
+            }).then((result)=>{
+                if(result.value){
+                    this.form.delete('api/material/' + id)
+                    .then(()=>{
+                        swal(
+                            'Deleted!',
+                             'Item has been deleted.',
+                             'success'
+                        );
+                       Fire.$emit('refresh');
+                    }).catch( ()=> {
+                        swal('Faid', 'There was something wrong.', 'warning');
+                    })
+                }
+            });
+          },
+          getResults(page = 1) {
+			axios.get('api/material?page=' + page)
+				.then(response => {
+					this.materials = response.data;
+				});
+		}
         },
         created() {
            this.loadMaterials();

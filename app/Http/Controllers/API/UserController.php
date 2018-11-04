@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::oldest()->paginate(10);
+        return User::oldest()->paginate(2);
     }
 
     /**
@@ -110,7 +110,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $deleteUser = User::findOrFail($user->id);
+        $deleteUser = User::findOrFail($id);
 
         $deleteUser->delete();
     }

@@ -24,7 +24,7 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        return Material::oldest()->paginate(10);
+        return Material::oldest()->paginate(5);
     }
 
     /**
@@ -96,6 +96,8 @@ class MaterialController extends Controller
      */
     public function destroy(Material $material)
     {
-        //
+        $this->authorize('isSuperAdmin');
+        $item = findOrFail($material->id);
+        $item->delete();
     }
 }

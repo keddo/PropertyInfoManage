@@ -147,7 +147,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{'img/profiles/'.Auth::user()->profile_pic}}" class="img-circle elevation-2" alt="User Image">
+           @if(Auth::user()->profile_pic == 'avatar.jpg')
+          <img src="{{'img/profiles/avatar.jpg'}}" class="img-circle elevation-2" alt="User Image">
+           @else
+              <img src="{{'img/profiles/'.Auth::user()->profile_pic}}" class="img-circle elevation-2" alt="User Image">
+           @endif
         </div>
         <div class="info">
           <a href="#" class="d-block">{{Auth::user()->name}}</a>
@@ -177,12 +181,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('isSuperAdmin')
               <li class="nav-item">
                 <router-link to="/users" class="nav-link">
                   <i class="fas fa-users nav-icon"></i>
                   <p>Users</p>
-                </a>
               </router-link>
+              </li>
+              @endcan
               <li class="nav-item">
                 <router-link to="/materials" class="nav-link">
                   <i class="fas fa-store nav-icon"></i>
@@ -191,6 +197,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
             </ul>
           </li>
+          @can('isSuperAdmin')
           <li class="nav-item">
             <router-link to="/developers" class="nav-link">
               <i class="nav-icon fab fa-connectdevelop"></i>
@@ -199,6 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </router-link>
           </li>
+          @endcan
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
@@ -260,7 +268,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </div>
 <!-- ./wrapper -->
 
-
+@auth
+  <script>
+      window.user = @json(auth()->user())
+  </script>
+@endauth
 <script src="/js/app.js"></script>
 
 </body>

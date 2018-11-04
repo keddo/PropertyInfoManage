@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('type')->default('Employee');
             $table->mediumText('skills')->nullable();
-            $table->string('profile_pic')->default('avatar.png')->nullable();
+            $table->string('profile_pic')->default('avatar.jpg')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

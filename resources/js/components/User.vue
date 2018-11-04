@@ -1,6 +1,7 @@
 <template>
     <div class="container mt-3">
-        <div class="row">
+        <div class="row" v-if="$gate.isSuperAdmin()">
+            
             <div class="col-md-12 col-lg-12">
               <div class="card"><!--card-->
                 <div class="card-header p-2">
@@ -48,8 +49,8 @@
                                                 <td>{{user.type}}</td>
                                                 <td>{{user.created_at | myDate}}</td>
                                                 <td>
-                                                    <a href="#" >
-                                                        <i class="fas fa-edit text-orang" @click="editEmployee(user)"></i>
+                                                    <a href="#" @click="editEmployee(user)">
+                                                        <i class="fas fa-edit text-orang" ></i>
                                                     </a>
                                                     <a href="#">
                                                         <i class="fas fa-eye green"></i>
@@ -62,6 +63,9 @@
                                           </tbody>
 
                                      </table>
+                                 </div>
+                                 <div class="card-footer">
+                                     <pagination :data="users" @pagination-change-page="getResults"></pagination>
                                  </div>
                              </div>
 
@@ -80,6 +84,10 @@
 
               </div>
             </div>
+        </div>
+        <div v-if="!$gate.isSuperAdmin()">
+                <h3 class="text-center"> Whoops.....You are not autherized to access this page?</h3>
+                <not-found></not-found>
         </div>
 
      <!-- Modal -->
@@ -115,7 +123,7 @@
                         class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
                         <option value="">Select User Role</option>
                         <option value="Super Admin">Super Admin</option>
-                        <option value="Admin">Admin</option>
+                        <option value="Property Admin">Propery Admin</option>
                         <option value="Head">Head</option>
                         <option value="Teacher">Teacher</option>
                         <option value="Assistant">Assistant</option>
@@ -232,6 +240,12 @@
                  this.users = data;
              })
           },
+         getResults(page = 1) {
+			axios.get('api/user?page=' + page)
+				.then(response => {
+					this.users = response.data;
+				});
+		}
         },
         created() {
            this.loadEmployees();

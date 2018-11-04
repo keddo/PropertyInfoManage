@@ -1,15 +1,8 @@
 <template>
-    <div class="container">
+    <div class="container mt-3">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Dashboard Component</div>
-
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
+        <h3 class="center-text">We are the designing this page to display the most important thing?</h3>
+           <not-found></not-found>
         </div>
     </div>
 </template>
