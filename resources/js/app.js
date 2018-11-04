@@ -26,6 +26,8 @@ let routes = [
     {path: '/materials', component: require( './components/Material.vue')},
     {path: '/profile', component: require('./components/Profile.vue')},
     {path: '/developers', component: require('./components/Developer.vue')},
+    {path: '/home', component: require('./components/Dashboard.vue')},
+    {path: '*', component: require('./components/PageNotFound.vue')},
 ]
 
 const router = new VueRouter({
@@ -88,5 +90,17 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data:{
+        search: ''
+    },
+    methods:{
+        searchData: _.debounce(()=>{
+            
+            Fire.$emit('searching');
+        },1000),
+        printScreen(){
+            window.print();
+        }
+    }
 });

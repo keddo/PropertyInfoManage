@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('auth.login');
 });
+Route::get('/invoice', function () {
+    return view('invoice');
+});
 
 Auth::routes();
 
